@@ -4,6 +4,8 @@ services:
   api: # Node.js App
     container_name: gs-api
     build: .
+    networks:
+      - elasticnet
     ports:
       - "3000:3000" # Expose API port
       - "9229:9229" # Expose Node process debug port (disable in production)
@@ -24,7 +26,9 @@ services:
 
   elasticsearch: # Elasticsearch Instance
     container_name: gs-search
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.2
+    networks:
+      - elasticnet
     volumes: # Persist ES data in seperate "esdata" volume
       - esdata:/usr/share/elasticsearch/data
     environment:
@@ -34,6 +38,20 @@ services:
     ports: # Expose ElasticSearch ports
       - "9300:9300"
       - "9200:9200"
-
+  kibana:
+    container_name: kb-container
+    image: docker.elastic.co/kibana/kibana:6.8.2
+    networks:
+      - elasticnet
+    environment:
+      - ELASTICSEARCH_URL=http://gs-search:9200
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"
 volumes:
   esdata:
+
+networks:
+  elasticnet:
+    driver: bridge
