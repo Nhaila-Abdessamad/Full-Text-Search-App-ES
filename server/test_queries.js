@@ -1,10 +1,31 @@
+/**
+ * test_queries namespace
+ * @namespace test_queries
+ */
+
 const { client, index, type } = require('./connection')
 
+
+/**
+ * returns the number of objects it counted  
+ * 
+ * @function count
+ * @memberof test_queries
+ * 
+ */
 async function count () {
   const result = await client.count({ index, type })
   console.log('count', result)
 }
 
+
+/**
+ * runs unit test 1
+ * 
+ * @function testSearch
+ * @memberof test_queries
+ * 
+ */
 async function testSearch () {
   const result = await client.search({
     index,
@@ -19,6 +40,14 @@ async function testSearch () {
   console.log('testSearch', result)
 }
 
+
+/**
+ * runs unit test 2
+ * 
+ * @function testSearch2
+ * @memberof test_queries
+ * 
+ */
 async function testSearch2 () {
   const result = await client.search({
     index,

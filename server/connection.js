@@ -1,3 +1,8 @@
+/**
+ * connection namespace
+ * @namespace connection
+ */
+
 const elasticsearch = require('elasticsearch')
 
 // Core ES variables for this project
@@ -7,7 +12,14 @@ const port = 9200
 const host = process.env.ES_HOST || 'localhost'
 const client = new elasticsearch.Client({ host: { host, port } })
 
-/** Check the ES connection status */
+
+/**
+ * Check the ES connection status
+ * 
+ * @function checkConnection
+ * @memberof connection
+ * 
+ */
 async function checkConnection () {
   let isConnected = false
   while (!isConnected) {
@@ -22,7 +34,14 @@ async function checkConnection () {
   }
 }
 
-/** Clear the index, recreate it, and add mappings */
+/**
+* Clear the index, recreate it, and add mappings
+* 
+* @function resetIndex
+* @memberof connection
+* 
+*/
+
 async function resetIndex () {
   if (await client.indices.exists({ index })) {
     await client.indices.delete({ index })
@@ -32,7 +51,14 @@ async function resetIndex () {
   await putBookMapping()
 }
 
-/** Add book section schema mapping to ES */
+
+/**
+ * Add book section schema mapping to ES
+ * 
+ * @function putBookMapping
+ * @memberof connection
+ * 
+ */
 async function putBookMapping () {
   const schema = {
     title: { type: 'keyword' },

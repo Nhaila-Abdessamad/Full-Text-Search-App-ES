@@ -1,5 +1,16 @@
+/**
+ * load data namespace
+ * @namespace load_data
+ */
+
 const fs = require('fs')
 const path = require('path')
+
+/**
+ * connection to elastic search
+ * @global
+ * @see {@link connection} for further information.
+ */
 const esConnection = require('./connection')
 
 /** Read an individual book txt file, and extract the title, author, and paragraphs */
@@ -31,7 +42,18 @@ function parseBookFile (filePath) {
   return { title, author, paragraphs }
 }
 
-/** Bulk index the book data in ElasticSearch */
+/**
+ * Bulk index the book data in ElasticSearch
+ * @function insertBookData
+ * @memberof load_data
+ * 
+ * @param  {} title
+ * @param  {} authors
+ * @param  {} paragraphs
+ * 
+ * @see {@link connection} for further information.
+ * 
+ */
 async function insertBookData (title, author, paragraphs) {
   let bulkOps = [] // Array to store bulk operations
 
@@ -60,7 +82,13 @@ async function insertBookData (title, author, paragraphs) {
   console.log(`Indexed Paragraphs ${paragraphs.length - (bulkOps.length / 2)} - ${paragraphs.length}\n\n\n`)
 }
 
-/** Clear ES index, parse and index all files from the books directory */
+/**
+ * Clear ES index, parse and index all files from the books directory
+ * @function readAndInsertBooks
+ * @memberof load_data
+ * @see {@link connection} for further information.
+ * 
+ */
 async function readAndInsertBooks () {
   await esConnection.checkConnection()
 
